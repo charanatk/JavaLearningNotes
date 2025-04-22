@@ -21,7 +21,7 @@
 🌩️ Cloud + DevOps (AWS, Docker, Kubernetes)
 [AWS Skill Builder](https://skillbuilder.aws/) – Free, official AWS prep.
 
-KodeKloud – Hands-on labs for Docker, Kubernetes, CI/CD. Very practical for DevOps tools.
+[KodeKloud](https://kodekloud.com/) – Hands-on labs for Docker, Kubernetes, CI/CD. Very practical for DevOps tools.
 
 Katacoda (Archived but still useful) – Hands-on scenarios for containerization.
 
