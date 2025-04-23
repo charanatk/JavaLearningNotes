@@ -17,6 +17,7 @@ new Thread(new Runnable() {
 
 // With Lambda
 new Thread(() -> System.out.println("Hello")).start();
+``java
 **##2 🧩 Functional Interfaces**
 A functional interface has exactly one abstract method. It can also have multiple default or static methods.
 ```java
