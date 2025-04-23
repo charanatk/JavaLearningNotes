@@ -1,35 +1,113 @@
-# JavaLearningNotes
-🎯 Backend (Java, Spring Boot, Microservices)
-[Baeldung](https://www.baeldung.com/) – Deep-dive into Spring Boot, Spring Security, REST APIs, and microservices architecture.
+# 🚀 Java 8 Features for Beginners
 
-[Educative.io – Grokking the Java Interview](https://www.educative.io/courses/grokking-coding-interview?utm_campaign=topic_interview_prep&utm_source=google&utm_medium=ppc&utm_content=&utm_term=&eid=5082902844932096&utm_term=grokking%20the%20coding%20interview&utm_campaign=%5BTopic%5D+Grokking+Interview+-+USCAN&utm_source=adwords&utm_medium=ppc&hsa_acc=5451446008&hsa_cam=14045073269&hsa_grp=135456430042&hsa_ad=584258867265&hsa_src=g&hsa_tgt=kwd-586801686237&hsa_kw=grokking%20the%20coding%20interview&hsa_mt=b&hsa_net=adwords&hsa_ver=3&gad_source=1&gclid=Cj0KCQjw_JzABhC2ARIsAPe3ynpSAUkmC_4XMbCgeKSGzefwDTu56enfL5dgUjXaOnxVMT1dwYcol8waAsEeEALw_wcB) – Covers Java, OOP, JVM, and Spring basics well.
+Java 8 introduced many powerful features that made Java programming more expressive, concise, and functional. Here are the most essential ones for beginners:
 
-[GeeksforGeeks Java + Spring Boot Section](https://www.geeksforgeeks.org/spring-boot/) – For hands-on code and Java interview questions.
+---
 
-💡 System Design + Architecture (Important for 14+ YOE)
-[Educative – Grokking the System Design Interview](https://www.educative.io/courses/grokking-the-system-design-interview?utm_campaign=system_design&utm_source=google&utm_medium=ppc&utm_content=search&utm_term=course&eid=5082902844932096&utm_term=grokking%20the%20system%20interview&utm_campaign=%5BNew%5D+System+Design-Search-US+CAN&utm_source=adwords&utm_medium=ppc&hsa_acc=5451446008&hsa_cam=18164799962&hsa_grp=147813323432&hsa_ad=652209647039&hsa_src=g&hsa_tgt=kwd-903484928147&hsa_kw=grokking%20the%20system%20interview&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gclid=Cj0KCQjw_JzABhC2ARIsAPe3ynoPIXl3bFMiRMbTC58uM28dngrvdGqeT7CB6HAR_bUOQwdgZ0UB2-QaArJYEALw_wcB) – Industry standard for preparing system design interviews.
+## 1. 🔥 Lambda Expressions
+Write functional-style code using concise syntax.
 
-[DesignGuru.io](https://www.designgurus.io/) – Focused on real-world low-level design questions and microservices, ideal for senior devs.
+```java
+// Before Java 8
+new Thread(new Runnable() {
+    public void run() {
+        System.out.println("Hello");
+    }
+}).start();
 
-💻 Frontend (React, Redux, HTML/CSS/JS)
-[Frontend Interview Handbook](https://frontendinterviewhandbook.com/) – Great for React + JS basics and interview behavior.
+// With Lambda
+new Thread(() -> System.out.println("Hello")).start();
+. 🧩 Functional Interfaces
+A functional interface has exactly one abstract method. It can also have multiple default or static methods.
 
-[JavaScript Info](https://javascript.info/) – Deep dive into JavaScript.
+java
+Copy
+Edit
+@FunctionalInterface
+interface MyFunction {
+    void apply();
+}
+You can use them with lambda expressions or method references.
 
-[FrontendMasters](https://frontendmasters.com/) – Paid, but top-tier for React, Redux, and performance optimization.
+3. 🔁 Stream API
+The Stream API lets you process collections like Lists and Sets in a functional and readable way.
 
-🌩️ Cloud + DevOps (AWS, Docker, Kubernetes)
-[AWS Skill Builder](https://skillbuilder.aws/) – Free, official AWS prep.
+java
+Copy
+Edit
+List<String> names = Arrays.asList("Tom", "Jerry", "Spike");
 
-[KodeKloud](https://kodekloud.com/) – Hands-on labs for Docker, Kubernetes, CI/CD. Very practical for DevOps tools.
+names.stream()
+     .filter(n -> n.startsWith("J"))
+     .map(String::toUpperCase)
+     .forEach(System.out::println);
+4. ⚙️ Default and Static Methods in Interfaces
+Interfaces can now include default method implementations and static methods.
 
-Katacoda (Archived but still useful) – Hands-on scenarios for containerization.
+java
+Copy
+Edit
+interface MyInterface {
+    default void sayHi() {
+        System.out.println("Hi");
+    }
 
-📦 Full-Stack Interview Practice
-Turing Full Stack Interview Questions – Role-specific questions (Java + React).
+    static void sayHello() {
+        System.out.println("Hello");
+    }
+}
+5. 📌 Method References
+Method references offer a shorter syntax for calling methods.
 
-InterviewBit – Good for DSA + behavioral + coding rounds.
+java
+Copy
+Edit
+List<String> list = Arrays.asList("Apple", "Banana", "Cherry");
 
-🧪 Testing Frameworks (JUnit, Selenium)
-Test Automation University (by Applitools) – Free and excellent Selenium, JUnit, TestNG courses.
+// Using lambda
+list.forEach(fruit -> System.out.println(fruit));
 
+// Using method reference
+list.forEach(System.out::println);
+6. ❓ Optional Class
+Optional is a container object that may or may not contain a non-null value. It helps avoid NullPointerException.
+
+java
+Copy
+Edit
+Optional<String> name = Optional.of("John");
+
+name.ifPresent(System.out::println); // prints "John"
+
+// or provide a default
+String result = name.orElse("Default");
+7. 🕒 New Date and Time API
+Java 8 introduced a new java.time package that provides a better and immutable way to handle dates and times.
+
+java
+Copy
+Edit
+import java.time.LocalDate;
+import java.time.Month;
+
+LocalDate today = LocalDate.now();
+LocalDate birthday = LocalDate.of(1990, Month.JANUARY, 1);
+
+System.out.println("Today: " + today);
+System.out.println("Birthday: " + birthday);
+✅ Summary
+Java 8 brought modern, functional programming features to Java:
+
+✔ Lambda Expressions
+
+✔ Functional Interfaces
+
+✔ Stream API
+
+✔ Default & Static Methods in Interfaces
+
+✔ Method References
+
+✔ Optional API
+
+✔ New Date & Time API
