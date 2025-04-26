@@ -51,6 +51,13 @@ Test Automation University (by Applitools) – Free and excellent Selenium, JUni
 | **Removed Legacy Support** | Supports older APIs                   | Dropped deprecated/legacy features             |
 
 
+- Spring Boot 3 requires **Java 17+**
+- Major namespace change: `javax.*` → `jakarta.*`
+- Better support for **GraalVM Native Images**
+- Updated dependencies across the board (e.g., **Hibernate 6**, **Tomcat 10**)
+
+
+
 
 
 
