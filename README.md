@@ -40,7 +40,7 @@ Test Automation University (by Applitools) – Free and excellent Selenium, JUni
 
 
 
-Feature                | Spring Boot 2                    | Spring Boot 3
+Feature                | Spring Boot 2                        | Spring Boot 3
 Java Version           | Java 8+                              | Java 17+ (required)
 Spring Framework       | Based on Spring 5                    | Based on Spring 6
 Jakarta EE             | Uses javax.* packages                | Uses jakarta.* (migration needed)
