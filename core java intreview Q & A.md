@@ -387,3 +387,60 @@ System.gc();
 Occurs when the JVM cannot allocate memory for an object because it has run out of heap space.
 
 ---
+
+# Overloading and Overriding Advanced Interview FAQs
+
+## 1. When should you prefer Method Overloading?
+
+**Answer:**
+- When you want the **same method name** to perform **similar tasks** but with different input parameters.
+- Example: constructors, utility classes like `Math` class.
+
+## 2. When should you prefer Method Overriding?
+
+**Answer:**
+- When you want to **change behavior** of a method in the child class.
+- Overriding helps in achieving **runtime polymorphism**.
+
+## 3. Can private methods be overridden?
+
+**Answer:**
+- ❌ No. Private methods are **not inherited** by subclasses, so they cannot be overridden.
+
+## 4. What happens if you change only the return type during overloading?
+
+**Answer:**
+- ❌ It will cause a compilation error.
+- You must **change parameters** too for valid overloading.
+
+## 5. Can final methods be overridden?
+
+**Answer:**
+- ❌ No. Methods declared as `final` cannot be overridden.
+
+## 6. Can constructors be overloaded and overridden?
+
+**Answer:**
+- **Constructors can be overloaded** (different signatures).
+- **Constructors cannot be overridden** (they are not inherited).
+
+## 7. What is covariant return type in Java?
+
+**Answer:**
+- In method overriding, the return type of the overriding method can be a **subclass** of the return type declared in the original overridden method.
+
+```java
+class Animal {}
+class Dog extends Animal {}
+
+class Parent {
+    Animal getAnimal() { return new Animal(); }
+}
+
+class Child extends Parent {
+    @Override
+    Dog getAnimal() { return new Dog(); }
+}
+```
+
+---
