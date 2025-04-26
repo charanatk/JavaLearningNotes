@@ -40,14 +40,16 @@ Test Automation University (by Applitools) – Free and excellent Selenium, JUni
 
 
 
-Feature                | Spring Boot 2                        | Spring Boot 3
-Java Version           | Java 8+                              | Java 17+ (required)
-Spring Framework       | Based on Spring 5                    | Based on Spring 6
-Jakarta EE             | Uses javax.* packages                | Uses jakarta.* (migration needed)
-Native Support         | Limited or via plugins               | Built-in support via Spring Native
-Observability          | Manual integration with Micrometer   | Micrometer 2.x and Observability APIs
-Security               | Spring Security 5                    | Spring Security 6 (more modular)
-Removed Legacy Support | Supports older APIs                  | Dropped deprecated/legacy features
+| **Feature**              | **Spring Boot 2**                       | **Spring Boot 3**                              |
+|--------------------------|-----------------------------------------|------------------------------------------------|
+| **Java Version**         | Java 8+                                 | Java 17+ (required)                            |
+| **Spring Framework**     | Based on Spring 5                       | Based on Spring 6                              |
+| **Jakarta EE**           | Uses `javax.*` packages                 | Uses `jakarta.*` (migration needed)            |
+| **Native Support**       | Limited or via plugins                  | Built-in support via Spring Native             |
+| **Observability**        | Manual integration with Micrometer      | Micrometer 2.x and Observability APIs          |
+| **Security**             | Spring Security 5                       | Spring Security 6 (more modular)               |
+| **Removed Legacy Support** | Supports older APIs                   | Dropped deprecated/legacy features             |
+
 
 
 
