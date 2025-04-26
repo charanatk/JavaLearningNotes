@@ -37,7 +37,7 @@ Test Automation University (by Applitools) – Free and excellent Selenium, JUni
 
 
 
-
+# Spring Boot 2 vs Spring Boot 3 (Key Differences)
 
 
 | **Feature**              | **Spring Boot 2**                       | **Spring Boot 3**                              |
