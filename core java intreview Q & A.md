@@ -245,6 +245,7 @@ class Test implements Marker {
 
 **Answer:**
 Serialization is the process of converting an object's state into a byte stream so that the byte stream can be reverted back into a copy of the object.
+This stream can then be saved to a file, sent across a network, or even stored in a database. Later on, this stream of bytes can be used to recreate the exact same Java object, restoring it to its previous state.
 
 ## 2. What is Deserialization in Java?
 
