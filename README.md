@@ -1,6 +1,7 @@
 # JavaLearningNotes
 🎯 Backend (Java, Spring Boot, Microservices)
 [Baeldung](https://www.baeldung.com/) – Deep-dive into Spring Boot, Spring Security, REST APIs, and microservices architecture.
+new
 
 [Educative.io – Grokking the Java Interview](https://www.educative.io/courses/grokking-coding-interview?utm_campaign=topic_interview_prep&utm_source=google&utm_medium=ppc&utm_content=&utm_term=&eid=5082902844932096&utm_term=grokking%20the%20coding%20interview&utm_campaign=%5BTopic%5D+Grokking+Interview+-+USCAN&utm_source=adwords&utm_medium=ppc&hsa_acc=5451446008&hsa_cam=14045073269&hsa_grp=135456430042&hsa_ad=584258867265&hsa_src=g&hsa_tgt=kwd-586801686237&hsa_kw=grokking%20the%20coding%20interview&hsa_mt=b&hsa_net=adwords&hsa_ver=3&gad_source=1&gclid=Cj0KCQjw_JzABhC2ARIsAPe3ynpSAUkmC_4XMbCgeKSGzefwDTu56enfL5dgUjXaOnxVMT1dwYcol8waAsEeEALw_wcB) – Covers Java, OOP, JVM, and Spring basics well.
 
