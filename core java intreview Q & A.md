@@ -992,3 +992,182 @@ public class ValidPalindrome {
 }
 ```
 
+# Java Exception Handling – Interview Questions & Answers
+
+## 1. What is an Exception in Java?
+An exception is an event that disrupts the normal flow of the program. It is an object which is thrown at runtime when an error occurs.
+
+## 2. What are the types of Exceptions in Java?
+- **Checked Exceptions** – Checked at compile time (e.g., `IOException`, `SQLException`).
+- **Unchecked Exceptions** – Checked at runtime (e.g., `NullPointerException`, `ArrayIndexOutOfBoundsException`).
+- **Errors** – Serious issues like `OutOfMemoryError`, usually not handled by applications.
+
+## 3. Difference between `throw` and `throws`?
+- `throw` is used to **actually throw** an exception.
+- `throws` is used to **declare** exceptions a method may throw.
+
+## 4. What is the purpose of the `finally` block?
+It contains code that always executes after the `try` and `catch`, regardless of whether an exception occurred.
+
+## 5. Can we have try block without catch or finally?
+No, a `try` block must be followed by either a `catch`, a `finally`, or both.
+
+## 6. What happens if an exception is not handled?
+The program terminates, and the JVM prints the stack trace of the exception.
+
+## 7. What is a custom exception and how to create one?
+A user-defined exception created by extending `Exception` or `RuntimeException`.
+
+```java
+class MyException extends Exception {
+    public MyException(String msg) {
+        super(msg);
+    }
+}
+```
+## 8. What is the difference between `final`, `finally`, and `finalize()`?
+- `final`: Used to declare constants, prevent method overriding, and inheritance.
+- `finally`: A block that always executes after try/catch, used for cleanup.
+- `finalize()`: A method called by the garbage collector before object destruction (now deprecated in Java 9+).
+
+## 9. What is exception chaining?
+It is the practice of wrapping one exception within another to preserve the original cause. Useful for debugging complex issues.
+
+```java
+throw new Exception("Main exception", originalException);
+
+```
+
+## 10. What is a try-with-resources statement?
+Introduced in Java 7, it is used to automatically close resources like files or streams that implement the `AutoCloseable` interface.
+
+```java
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
+    // use the resource
+}
+```
+
+## 11. Can you catch multiple exceptions in a single catch block?
+Yes. Java 7 introduced multi-catch to handle different exception types in one block.
+
+```java
+catch (IOException | SQLException ex) {
+    ex.printStackTrace();
+}
+```
+
+## 12. Can a finally block override a return statement?
+Yes. If a return statement exists in both try and finally, the one in finally will override the others.
+
+```java
+public int test() {
+    try {
+        return 1;
+    } finally {
+        return 2; // This will be returned
+    }
+}
+```
+
+## 13. What are suppressed exceptions in Java?
+In try-with-resources, if an exception is thrown in both try and resource closing, the latter is suppressed and attached to the main exception.
+
+```java
+Throwable[] suppressed = primaryException.getSuppressed();
+```
+
+## 14. Can you catch Throwable? Should you?
+Technically yes, but it's discouraged. `Throwable` includes `Error`s like `OutOfMemoryError` which are not meant to be caught by applications.
+
+## 15. What’s the difference between Error and Exception?
+- **Error**: Serious problems that are usually not handled by applications (e.g., JVM crash, memory issues).
+- **Exception**: Conditions that a program might want to catch and handle (e.g., I/O errors, invalid input).
+
+## 16. Why should you avoid catching general Exception?
+- It masks specific issues.
+- Makes debugging difficult.
+- Can catch unintended exceptions like `NullPointerException`.
+
+## 17. What’s the role of stack trace in exceptions?
+The stack trace helps in debugging by showing the sequence of method calls that led to the exception.
+
+
+# Try-With-Resources – Interview Questions & Answers
+
+## 1. What is try-with-resources in Java?
+Try-with-resources is a try statement that automatically closes resources like files, streams, or sockets that implement the `AutoCloseable` interface.
+
+## 2. When was try-with-resources introduced?
+It was introduced in Java 7 to simplify resource management and avoid boilerplate `finally` blocks.
+
+## 3. What are the advantages of try-with-resources?
+- Automatic resource management
+- Cleaner and more readable code
+- No need for explicit `finally` block
+- Fewer chances of resource leaks
+
+## 4. Which interface must a resource implement to be used in try-with-resources?
+The resource must implement the `AutoCloseable` interface (or `Closeable`, which extends `AutoCloseable`).
+
+## 5. Can you use multiple resources in a single try-with-resources statement?
+Yes, multiple resources can be declared in a single statement, separated by semicolons.
+
+```java
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"));
+     PrintWriter pw = new PrintWriter(new FileWriter("output.txt"))) {
+    // Use both resources
+}
+```
+
+## 6. What happens if an exception is thrown while closing a resource?
+The exception thrown while closing is **suppressed** and attached to the primary exception using `getSuppressed()`.
+
+## 7. What are suppressed exceptions?
+Exceptions thrown in the `close()` method during try-with-resources are not lost; they are added as suppressed exceptions to the main one.
+
+```java
+for (Throwable t : primaryException.getSuppressed()) {
+    t.printStackTrace();
+}
+```
+
+## 8. Can variables declared outside the try-with-resources be used as resources?
+Yes, from Java 9 onwards, **effectively final** variables can be used inside the try-with-resources.
+
+```java
+BufferedReader br = new BufferedReader(new FileReader("file.txt"));
+try (br) {
+    // Allowed in Java 9+
+}
+```
+
+## 9. How is try-with-resources better than finally block?
+It ensures that all resources are closed reliably and automatically, while `finally` requires manual closure and is more error-prone.
+
+## 10. What if both try block and close method throw exceptions?
+The exception in the try block is thrown, and the one from close is suppressed and added to the primary exception.
+
+## 11. Can custom classes be used in try-with-resources?
+Yes, as long as the class implements `AutoCloseable`.
+
+```java
+class MyResource implements AutoCloseable {
+    public void close() {
+        System.out.println("Closing resource");
+    }
+}
+```
+
+## 12. Is try-with-resources compatible with older Java versions?
+No. It was introduced in Java 7 and enhanced in Java 9. It is not available in Java 6 or earlier.
+
+## 13. What is the difference between AutoCloseable and Closeable?
+- `Closeable` is for IO classes and throws `IOException`.
+- `AutoCloseable` is more general and can throw any exception.
+
+## 14. Can we suppress exceptions in try-with-resources manually?
+No, suppressed exceptions are handled automatically, but you can access them using `getSuppressed()`.
+
+## 15. Does try-with-resources support custom error logging while closing?
+You can override the `close()` method in your resource and log errors manually inside it.
+
