@@ -1171,3 +1171,112 @@ No, suppressed exceptions are handled automatically, but you can access them usi
 ## 15. Does try-with-resources support custom error logging while closing?
 You can override the `close()` method in your resource and log errors manually inside it.
 
+
+# Java Collections Interview Questions and Answers
+
+## 📌 Basics
+
+### 1. What is the Java Collections Framework?
+The Java Collections Framework (JCF) is a unified architecture for representing and manipulating collections such as lists, sets, maps, etc. It includes interfaces, implementations, and algorithms.
+
+### 2. Difference between List, Set, and Map?
+
+| Feature          | List           | Set            | Map               |
+|------------------|----------------|----------------|-------------------|
+| Stores           | Elements       | Unique elements| Key-value pairs   |
+| Allows duplicates| Yes            | No             | Keys: No, Values: Yes |
+| Examples         | ArrayList, LinkedList | HashSet, TreeSet | HashMap, TreeMap |
+
+### 3. Difference between ArrayList and LinkedList?
+
+| Feature        | ArrayList     | LinkedList     |
+|----------------|---------------|----------------|
+| Backed by      | Array         | Doubly Linked List |
+| Access time    | Fast (O(1))   | Slow (O(n))    |
+| Insert/Delete  | Slow in middle| Fast at ends   |
+| Memory usage   | Less          | More           |
+
+### 4. Difference between HashSet and TreeSet?
+
+| Feature       | HashSet       | TreeSet        |
+|---------------|---------------|----------------|
+| Order         | No order      | Sorted order   |
+| Performance   | O(1)          | O(log n)       |
+| Null elements | Allows one    | Not allowed if using comparator |
+
+### 5. Difference between HashMap and Hashtable?
+
+| Feature       | HashMap       | Hashtable      |
+|---------------|---------------|----------------|
+| Thread safety | Not synchronized | Synchronized |
+| Nulls         | 1 null key, multiple null values | None allowed |
+| Performance   | Faster        | Slower         |
+
+## ⚙️ Advanced
+
+### 6. How does HashMap work internally?
+Uses array of buckets, hash of key determines index. Collision handled by chaining or red-black tree (since Java 8).
+
+### 7. Difference between Comparable and Comparator?
+
+| Feature     | Comparable         | Comparator         |
+|-------------|--------------------|--------------------|
+| Package     | java.lang          | java.util          |
+| Method      | compareTo()        | compare()          |
+| Affects     | Natural ordering   | Custom ordering    |
+
+### 8. Fail-fast vs Fail-safe?
+
+| Feature     | Fail-fast          | Fail-safe          |
+|-------------|--------------------|--------------------|
+| Behavior    | Throws exception on concurrent modification | No exception |
+| Examples    | ArrayList, HashSet | CopyOnWriteArrayList, ConcurrentHashMap |
+
+### 9. How does ConcurrentHashMap work?
+Segment-based lock (pre-Java 8) or bucket-level locking using CAS (Java 8+).
+
+### 10. How does CopyOnWriteArrayList work?
+Creates a new array copy on every write. Best for many reads, few writes.
+
+## 📎 Miscellaneous
+
+- **EnumSet/EnumMap:** Optimized for use with enums.
+- **ArrayDeque vs Stack:** ArrayDeque is preferred (faster, no synchronization).
+- **IdentityHashMap:** Compares keys using `==`, not `equals()`.
+- **LRU Cache:** Use `LinkedHashMap` with accessOrder set to true.
+
+```java
+new LinkedHashMap<K, V>(capacity, 0.75f, true) {
+    protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+        return size() > MAX_SIZE;
+    }
+};
+```
+
+### Collections Overview Diagram (Text)
+
+```
+Collection (interface)
+├── List
+│   ├── ArrayList
+│   └── LinkedList
+├── Set
+│   ├── HashSet
+│   └── TreeSet
+└── Queue
+    ├── PriorityQueue
+    └── ArrayDeque
+
+Map (interface)
+├── HashMap
+├── TreeMap
+└── LinkedHashMap
+```
+
+## ✅ Summary
+
+- Use `ArrayList` for fast access, `LinkedList` for frequent insertions/removals.
+- Use `HashMap` for key-value, `TreeMap` for sorted keys.
+- Prefer `ConcurrentHashMap` over `Hashtable` in concurrent apps.
+- Use `EnumSet`/`EnumMap` for enums.
+
