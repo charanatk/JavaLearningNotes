@@ -1172,6 +1172,7 @@ No, suppressed exceptions are handled automatically, but you can access them usi
 You can override the `close()` method in your resource and log errors manually inside it.
 
 
+
 # Java Collections Interview Questions and Answers
 
 ## 📌 Basics
@@ -1279,4 +1280,43 @@ Map (interface)
 - Use `HashMap` for key-value, `TreeMap` for sorted keys.
 - Prefer `ConcurrentHashMap` over `Hashtable` in concurrent apps.
 - Use `EnumSet`/`EnumMap` for enums.
+
+## 🔍 More Interview Q&A
+
+### 11. What is the difference between Iterator and ListIterator?
+
+| Feature         | Iterator           | ListIterator         |
+|-----------------|--------------------|-----------------------|
+| Direction       | Forward only       | Forward and backward |
+| Applicable to   | All collections    | Only List            |
+| Extra Methods   | N/A                | add(), previous(), hasPrevious() |
+
+### 12. Why are Java collections not thread-safe by default?
+To avoid performance overhead. Java provides thread-safe alternatives like `Collections.synchronizedList()` and `ConcurrentHashMap`.
+
+### 13. What are WeakHashMap and its use case?
+A `WeakHashMap` uses weak references for keys. Keys can be garbage collected when no longer in use elsewhere. Ideal for caching where you want keys to be automatically removed.
+
+### 14. Difference between HashMap and LinkedHashMap?
+
+| Feature      | HashMap           | LinkedHashMap         |
+|--------------|-------------------|------------------------|
+| Ordering     | Unordered         | Insertion/access order|
+| Performance  | Slightly better   | Slightly slower       |
+| Use case     | General use       | LRU Cache, order-sensitive data |
+
+### 15. How to make a collection read-only?
+Use the utility methods in `Collections` class:
+```java
+List<String> list = Collections.unmodifiableList(new ArrayList<>());
+```
+
+### 16. What is the difference between Collection and Collections in Java?
+- `Collection`: An interface in `java.util` (supertype of List, Set, Queue).
+- `Collections`: A utility class containing static methods (e.g., `sort()`, `reverse()`, `synchronizedList()`).
+
+### 17. What is a BlockingQueue in Java?
+A thread-safe queue that supports operations that wait for the queue to become non-empty/full:
+- Examples: `ArrayBlockingQueue`, `LinkedBlockingQueue`, `PriorityBlockingQueue`.
+
 
