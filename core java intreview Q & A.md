@@ -1230,7 +1230,7 @@ Uses array of buckets, hash of key determines index. Collision handled by chaini
 
 | Feature     | Fail-fast          | Fail-safe          |
 |-------------|--------------------|--------------------|
-| Behavior    | Throws exception on concurrent modification | No exception |
+| Behavior    |When Collection is modified while iterating it's Throws exception on concurrent modification | Allows modification of Collection during iteration without throwing exception |
 | Examples    | ArrayList, HashSet | CopyOnWriteArrayList, ConcurrentHashMap |
 
 ### 9. How does ConcurrentHashMap work?
@@ -1318,5 +1318,103 @@ List<String> list = Collections.unmodifiableList(new ArrayList<>());
 ### 17. What is a BlockingQueue in Java?
 A thread-safe queue that supports operations that wait for the queue to become non-empty/full:
 - Examples: `ArrayBlockingQueue`, `LinkedBlockingQueue`, `PriorityBlockingQueue`.
+
+
+# HashMap Internal Implementation in Java
+
+## 1. Basic Structure
+
+```java
+transient Node<K,V>[] table;
+
+static class Node<K,V> implements Map.Entry<K,V> {
+    final int hash;
+    final K key;
+    V value;
+    Node<K,V> next;
+}
+```
+
+* `table` is the main array where data is stored.
+* Each `Node` holds a key, value, hash, and reference to the next node (for chaining).
+
+---
+
+## 2. Hashing Mechanism
+
+* Uses the key's `hashCode()` and a supplemental hash function:
+
+```java
+int hash = hash(key.hashCode());
+int index = (n - 1) & hash;
+```
+
+* `index` determines the bucket location in the array.
+
+---
+
+## 3. Collision Resolution
+
+* If multiple keys map to the same bucket index, a **collision** occurs.
+* Two strategies:
+
+  * **Linked List**: Chaining the entries in the same bucket.
+  * **Tree (Java 8+)**: Converts list to red-black tree if entries in a bucket exceed threshold (8).
+
+---
+
+## 4. Resizing
+
+* Happens when size exceeds `capacity * loadFactor` (default loadFactor is 0.75).
+* Doubles the capacity and rehashes existing entries into new buckets.
+
+---
+
+## 5. Insertion Logic
+
+```java
+public V put(K key, V value) {
+    int hash = hash(key.hashCode());
+    int index = (n - 1) & hash;
+    if (table[index] == null) {
+        table[index] = new Node<>(hash, key, value, null);
+    } else {
+        Node<K, V> e = table[index];
+        while (e != null) {
+            if (e.hash == hash && Objects.equals(e.key, key)) {
+                e.value = value; // Update existing
+                return;
+            }
+            e = e.next;
+        }
+        // Add new node to chain
+    }
+    // Resize if needed
+}
+```
+
+---
+
+## 6. Complexity
+
+| Operation | Average Time | Worst-Case Time   |
+| --------- | ------------ | ----------------- |
+| Get / Put | O(1)         | O(n) / O(log n)\* |
+| Resize    | O(n)         | O(n)              |
+
+> \*Java 8 and later use tree-based bins, improving worst-case time from O(n) to O(log n).
+
+---
+
+## Summary
+
+* `HashMap` is fast and efficient but not thread-safe.
+* It uses an array + chaining (linked list or tree).
+* Keys must implement `hashCode()` and `equals()` correctly.
+* Java 8+ improved performance using red-black trees for buckets with many collisions.
+
+---
+
+Would you like a visual diagram added to this file?
 
 
