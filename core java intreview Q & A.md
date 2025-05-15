@@ -1415,6 +1415,306 @@ public V put(K key, V value) {
 
 ---
 
-Would you like a visual diagram added to this file?
+
+# Java Threads Interview Questions and Answers
+
+## 🔹 Basic Level
+
+### 1. What is a thread in Java?
+A thread is a lightweight subprocess, the smallest unit of processing. Java enables multithreading — running multiple threads simultaneously to perform tasks in parallel.
+
+---
+
+### 2. How do you create a thread in Java?
+- By extending the `Thread` class:
+```java
+class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread running");
+    }
+}
+```
+- By implementing the `Runnable` interface:
+```java
+class MyRunnable implements Runnable {
+    public void run() {
+        System.out.println("Runnable running");
+    }
+}
+```
+
+---
+
+### 3. What is the difference between `start()` and `run()`?
+- `start()` creates a new thread and then calls the `run()` method.
+- `run()` is just a normal method call and doesn't start a new thread.
+
+---
+
+### 4. What is the lifecycle of a thread?
+1. New  
+2. Runnable  
+3. Running  
+4. Blocked/Waiting/Sleeping  
+5. Terminated (Dead)
+
+---
+
+### 5. What is the use of `sleep()` method?
+`Thread.sleep(milliseconds)` pauses the thread for a specified time. It throws `InterruptedException`.
+
+---
+
+## 🔹 Intermediate Level
+
+### 6. What is the difference between `wait()` and `sleep()`?
+
+| Feature        | `wait()`      | `sleep()`    |
+|----------------|----------------|---------------|
+| Class          | Object         | Thread        |
+| Releases Lock  | Yes            | No            |
+| Can be Interrupted | Yes       | Yes           |
+| Purpose        | Thread coordination | Pause execution |
+
+---
+
+### 7. What is synchronization in Java?
+Synchronization ensures that only one thread accesses a shared resource at a time.
+
+```java
+synchronized void increment() {
+    count++;
+}
+```
+
+---
+
+### 8. What is a deadlock?
+Deadlock occurs when two or more threads wait for each other indefinitely, holding resources the others need.
+
+---
+
+### 9. How to avoid deadlock?
+- Avoid nested locks.
+- Lock resources in a fixed order.
+- Use `tryLock` with timeout.
+
+---
+
+### 10. Difference between `synchronized` method and `synchronized` block?
+- A `synchronized` method locks the whole method.
+- A `synchronized` block locks only the specified section of code.
+
+---
+
+## 🔹 Advanced Level
+
+### 11. What is `volatile` keyword?
+`volatile` ensures visibility. Updates to a `volatile` variable are always visible to other threads.
+
+---
+
+### 12. Difference between `ReentrantLock` and `synchronized`?
+
+| Feature       | `synchronized` | `ReentrantLock` |
+|----------------|----------------|------------------|
+| Flexibility    | Less            | More (e.g., tryLock) |
+| Fairness       | No              | Yes (configurable) |
+| Interruption   | Not supported   | Supported       |
+
+---
+
+### 13. What is `ThreadLocal`?
+It provides thread-local variables. Each thread has its own isolated value.
+
+```java
+ThreadLocal<Integer> local = ThreadLocal.withInitial(() -> 1);
+```
+
+---
+
+### 14. What is the Executor Framework?
+It provides a way to manage thread execution using a pool of threads.
+
+```java
+ExecutorService executor = Executors.newFixedThreadPool(5);
+executor.submit(() -> System.out.println("Task executed"));
+executor.shutdown();
+```
+
+---
+
+### 15. What are `Callable` and `Future`?
+- `Callable` is like `Runnable` but can return results and throw exceptions.
+- `Future` represents the result of an asynchronous computation.
+
+```java
+Callable<String> task = () -> "Hello";
+Future<String> result = executor.submit(task);
+```
+
+---
+
+
+# Java Concurrency, Thread Pools, and Real-World Multithreading Scenarios
+
+## 🔹 Java Concurrency Concepts
+
+### 1. What is concurrency in Java?
+Concurrency is the ability to run several programs or parts of a program in parallel. Java supports concurrency using multithreading, thread pools, concurrent collections, and synchronization mechanisms.
+
+---
+
+### 2. What is the difference between parallelism and concurrency?
+- **Concurrency** is about dealing with lots of tasks at once (logical).
+- **Parallelism** is about doing lots of tasks at once (physical, multiple cores).
+
+---
+
+### 3. What are common concurrency problems?
+- Race conditions
+- Deadlocks
+- Starvation
+- Livelocks
+- Thread interference
+- Visibility issues
+
+---
+
+## 🔹 Thread Pools and Executors
+
+### 4. What is a thread pool?
+A thread pool manages a pool of worker threads to execute tasks. It reduces the overhead of thread creation and improves performance.
+
+---
+
+### 5. What are different types of `ExecutorService`?
+
+```java
+Executors.newFixedThreadPool(int nThreads);
+Executors.newCachedThreadPool();
+Executors.newSingleThreadExecutor();
+Executors.newScheduledThreadPool(int corePoolSize);
+```
+
+---
+
+### 6. Real-world use of thread pool:
+```java
+ExecutorService executor = Executors.newFixedThreadPool(10);
+for (int i = 0; i < 100; i++) {
+    executor.submit(() -> {
+        // handle request
+    });
+}
+executor.shutdown();
+```
+
+---
+
+### 7. How does `ThreadPoolExecutor` work?
+It manages a queue of tasks and a pool of threads:
+```java
+ThreadPoolExecutor executor = new ThreadPoolExecutor(
+    corePoolSize,
+    maximumPoolSize,
+    keepAliveTime,
+    TimeUnit.SECONDS,
+    new LinkedBlockingQueue<Runnable>()
+);
+```
+
+---
+
+### 8. What are `Callable` and `Future` used for?
+- `Callable` returns a result and can throw exceptions.
+- `Future` is used to retrieve the result asynchronously.
+
+```java
+Future<String> future = executor.submit(() -> "Result");
+String result = future.get();
+```
+
+---
+
+## 🔹 Java Concurrency Utilities
+
+### 9. What is `CountDownLatch`?
+Allows one or more threads to wait until a set of operations are completed.
+
+```java
+CountDownLatch latch = new CountDownLatch(3);
+for (int i = 0; i < 3; i++) {
+    new Thread(() -> {
+        // do work
+        latch.countDown();
+    }).start();
+}
+latch.await(); // main thread waits
+```
+
+---
+
+### 10. What is `CyclicBarrier`?
+It allows a set of threads to wait for each other to reach a common barrier point.
+
+---
+
+### 11. What is `Semaphore`?
+Controls access to a resource with a fixed number of permits.
+
+---
+
+### 12. What are `ConcurrentHashMap` and `CopyOnWriteArrayList`?
+These are thread-safe collections designed for concurrent access without locking the entire data structure.
+
+---
+
+## 🔹 Real-World Multithreading Scenarios
+
+### 13. Producer-Consumer using BlockingQueue
+```java
+BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(10);
+
+// Producer
+new Thread(() -> {
+    while (true) {
+        queue.put(produce());
+    }
+}).start();
+
+// Consumer
+new Thread(() -> {
+    while (true) {
+        consume(queue.take());
+    }
+}).start();
+```
+
+---
+
+### 14. Web Server Request Handling
+Use a fixed thread pool to handle HTTP requests concurrently, avoiding the overhead of creating threads for each request.
+
+---
+
+### 15. Parallel Data Processing
+Using parallel streams or `ForkJoinPool` for processing large collections in parallel.
+
+```java
+list.parallelStream().forEach(item -> process(item));
+```
+
+---
+
+## 🔹 Best Practices
+
+- Use thread pools instead of manually creating threads.
+- Avoid shared mutable state or use proper synchronization.
+- Prefer higher-level concurrency APIs (e.g., ExecutorService, BlockingQueue).
+- Use atomic variables or `synchronized` blocks for shared resources.
+- Always shut down executors gracefully.
+
+---
 
 
