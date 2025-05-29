@@ -1,0 +1,275 @@
+Java 8 Interview Questions and Answers
+1. Lambda Expressions
+Q1: What are Lambda Expressions in Java 8?
+A: Lambda expressions are a new feature introduced in Java 8 that provides a concise way to represent anonymous functions. They are primarily used to implement functional interfaces and enable a more functional programming style.
+
+Q2: What is the basic syntax of a Lambda Expression?
+A: The basic syntax of a lambda expression is: (parameters) -> expression or (parameters) -> { statements; }
+
+Examples:
+
+() -> System.out.println("Hello Lambda!") (Zero parameters)
+(int a, int b) -> a + b (Two parameters, single expression)
+(String s) -> { System.out.println(s.toUpperCase()); return s.length(); } (One parameter, block of statements)
+Q3: What are the key features or advantages of using Lambda Expressions?
+A:
+
+Concise Code: Reduces boilerplate code compared to anonymous inner classes.
+Functional Programming: Enables a more functional style of programming in Java.
+Readability: Can make code more readable and understandable for simple operations.
+Parallel Processing: Facilitates easier parallel processing with the Stream API.
+Effectively Final: Can access effectively final local variables (variables that are not explicitly declared final but whose value is not changed after initialization).
+Q4: Explain "effectively final" in the context of Lambda Expressions.
+A: A local variable is "effectively final" if its value is never changed after its initialization. Lambda expressions can access such variables from their enclosing scope without explicitly declaring them as final. If you try to modify an "effectively final" variable inside a lambda, it will result in a compile-time error.
+
+Q5: What is a Method Reference, and how is it related to Lambda Expressions?
+A: Method references are a shorthand syntax for lambda expressions that refer to an existing method by name. They are used when a lambda expression simply calls an existing method. They improve readability and conciseness when the lambda's logic is already encapsulated in a method.
+
+Types of Method References:
+
+Static Method Reference: ClassName::staticMethodName
+Instance Method Reference of a particular object: objectName::instanceMethodName
+Instance Method Reference of an arbitrary object of a particular type: ClassName::instanceMethodName
+Constructor Reference: ClassName::new
+Example:
+
+Java
+
+List<String> names = Arrays.asList("Alice", "Bob");
+names.forEach(System.out::println); // Method reference equivalent to name -> System.out.println(name)
+2. Functional Interfaces
+Q6: What is a Functional Interface in Java 8?
+A: A functional interface is an interface that contains exactly one abstract method. They are also known as Single Abstract Method (SAM) interfaces. They can have any number of default and static methods. The @FunctionalInterface annotation is used to mark an interface as a functional interface, although it's optional.
+
+Q7: Give examples of common built-in Functional Interfaces introduced in java.util.function package.
+A:
+
+Predicate<T>: Represents a predicate (boolean-valued function) of one argument. Abstract method: boolean test(T t)
+Function<T, R>: Represents a function that accepts one argument and produces a result. Abstract method: R apply(T t)
+Consumer<T>: Represents an operation that accepts a single input argument and returns no result. Abstract method: void accept(T t)
+Supplier<T>: Represents a supplier of results. Abstract method: T get()
+BiPredicate<T, U>: Represents a predicate of two arguments. Abstract method: boolean test(T t, U u)
+BiFunction<T, U, R>: Represents a function that accepts two arguments and produces a result. Abstract method: R apply(T t, U u)
+BiConsumer<T, U>: Represents an operation that accepts two input arguments and returns no result. Abstract method: void accept(T t, U u)
+UnaryOperator<T>: Represents an operation on a single operand that produces a result of the same type as its operand. Abstract method: T apply(T t) (extends Function<T, T>)
+BinaryOperator<T>: Represents an operation upon two operands of the same type, producing a result of the same type as the operands. Abstract method: T apply(T t1, T t2) (extends BiFunction<T, T, T>)
+Q8: Can a functional interface have default methods? If yes, explain why and how.
+A: Yes, a functional interface can have default methods. Default methods were introduced in Java 8 to allow adding new methods to interfaces without breaking existing implementations. This was crucial for evolving interfaces like Iterable and Collection to support features like forEach and streams, without requiring all existing implementing classes to be updated.
+
+Example:
+
+Java
+
+@FunctionalInterface
+interface MyFunctionalInterface {
+    void doSomething(); // Single abstract method
+
+    default void doSomethingElse() {
+        System.out.println("Doing something else (default method)");
+    }
+
+    static void someStaticMethod() {
+        System.out.println("A static method in a functional interface");
+    }
+}
+Q9: Can a functional interface have static methods? Explain.
+A: Yes, functional interfaces can have static methods. Similar to default methods, static methods in interfaces were added in Java 8. They are utility methods that belong to the interface itself, not to any particular implementation. They can be called directly on the interface name.
+
+3. Stream API
+Q10: What is the Java 8 Stream API?
+A: The Java 8 Stream API is a new abstraction that allows you to process sequences of elements in a declarative and functional way. It provides a powerful and flexible way to perform operations like filtering, mapping, and reducing on collections of data. Streams do not store data; they operate on a source (like a Collection, Array, I/O channels, etc.).
+
+Q11: What are the main characteristics of Java Streams?
+A:
+
+Not a data structure: Streams don't store data; they operate on a source.
+Functional in nature: Operations on streams produce a result but do not modify the source.
+Lazy evaluation: Intermediate operations are not executed until a terminal operation is invoked.
+Can be consumed only once: Once a terminal operation is performed, the stream is closed and cannot be reused.
+Support for parallel processing: Streams can be easily processed in parallel using parallelStream().
+Q12: Explain the difference between Intermediate and Terminal Operations in Streams.
+A:
+Intermediate Operations:
+
+Return a new Stream object.
+Are "lazy," meaning they are not executed until a terminal operation is invoked.
+Can be chained together to form a pipeline.
+Examples: filter(), map(), distinct(), sorted(), limit(), skip(), peek().
+Terminal Operations:
+
+Produce a non-stream result (e.g., a Collection, a boolean, an Optional, a primitive value).
+Initiate the processing of the stream pipeline.
+A stream can only have one terminal operation.
+Examples: forEach(), collect(), reduce(), count(), min(), max(), anyMatch(), allMatch(), noneMatch(), findFirst(), findAny().
+Q13: What is the difference between map() and flatMap() in Stream API?
+A:
+
+map(): Transforms each element of a stream into a single new element. It applies a function to each element and returns a stream of the results. The output stream will have the same number of elements as the input stream (or fewer if the mapping function returns nulls, though this is generally avoided).
+Example: List<Integer> lengths = names.stream().map(String::length).collect(Collectors.toList());
+
+flatMap(): Transforms each element of a stream into zero or more elements, and then flattens these streams into a single stream. It's useful when you have a stream of collections (or arrays) and you want to process the elements inside those collections as a single flat stream.
+Example:
+
+Java
+
+List<List<String>> listOfLists = Arrays.asList(
+    Arrays.asList("a", "b"),
+    Arrays.asList("c", "d", "e")
+);
+List<String> flatList = listOfLists.stream()
+    .flatMap(Collection::stream)
+    .collect(Collectors.toList()); // Result: [a, b, c, d, e]
+Q14: Explain collect() and the Collectors class.
+A:
+
+collect() (Stream method): A terminal operation that performs a mutable reduction operation on the elements of this stream using a Collector. It gathers elements into a result container such as a List, Set, Map, or a single value.
+Collectors (utility class): Provides static factory methods for common Collector implementations. These collectors are used with the collect() method to perform various reduction operations.
+Common Collectors methods:
+
+Collectors.toList(): Gathers elements into a List.
+Collectors.toSet(): Gathers elements into a Set.
+Collectors.toMap(keyMapper, valueMapper): Gathers elements into a Map.
+Collectors.joining(): Concatenates elements of a CharSequence stream.
+Collectors.counting(): Counts the number of elements.
+Collectors.groupingBy(classifier): Groups elements by a classification function.
+Collectors.partitioningBy(predicate): Partitions elements into two groups (true/false) based on a predicate.
+Q15: What is the difference between findFirst() and findAny()?
+A: Both are terminal operations that return an Optional containing an element from the stream.
+
+findFirst(): Returns the first element in the stream, if present. This is deterministic and useful in sequential streams.
+findAny(): Returns any element from the stream, if present. This is non-deterministic and can be more efficient in parallel streams, as it can pick an element from any partition without needing to wait for the "first" one.
+Q16: How do you perform parallel processing with Streams?
+A: You can easily convert a sequential stream to a parallel stream by calling the parallel() method on the stream or by using parallelStream() directly on a collection.
+
+Example:
+
+Java
+
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+long sum = numbers.parallelStream()
+    .filter(n -> n % 2 == 0)
+    .mapToLong(Integer::longValue)
+    .sum();
+Parallel streams leverage the Fork/Join framework to process elements concurrently.
+
+Q17: When should you use forEach() vs. forEachOrdered()?
+A:
+
+forEach(Consumer action): Applies an action to each element of this stream. The order of execution is not guaranteed in parallel streams. For sequential streams, it respects the encounter order.
+forEachOrdered(Consumer action): Applies an action to each element of this stream, guaranteeing that the action is performed in the encounter order of the stream, even for parallel streams. This might incur a performance penalty in parallel streams.
+4. Optional Class
+Q18: What is the Optional class in Java 8?
+A: The Optional class (java.util.Optional) is a container object that may or may not contain a non-null value. It was introduced to address the problem of NullPointerException by providing a way to represent the explicit absence of a value.
+
+Q19: What are the advantages of using the Optional class?
+A:
+
+Avoids NullPointerException: By forcing you to explicitly handle the case where a value might be absent.
+Improved Readability: Makes the code more readable by clearly indicating that a value might be missing.
+Fluent API: Provides methods like isPresent(), ifPresent(), orElse(), orElseGet(), orElseThrow(), and map() for concise and expressive null-safe operations.
+Q20: Give examples of common Optional methods.
+A:
+
+Optional.of(value): Creates an Optional with a non-null value. Throws NullPointerException if value is null.
+Optional.ofNullable(value): Creates an Optional that contains the specified value if it's non-null, otherwise returns an empty Optional.
+Optional.empty(): Returns an empty Optional instance.
+isPresent(): Returns true if a value is present, false otherwise.
+get(): Returns the value if present, otherwise throws NoSuchElementException. (Use with caution after isPresent() or ifPresent()).
+ifPresent(Consumer consumer): If a value is present, performs the given action with the value, otherwise does nothing.
+orElse(T other): Returns the value if present, otherwise returns other.
+orElseGet(Supplier<? extends T> other): Returns the value if present, otherwise invokes the Supplier and returns the result. (Lazy evaluation)
+orElseThrow(Supplier<? extends X> exceptionSupplier): Returns the value if present, otherwise throws an exception produced by the exceptionSupplier.
+map(Function<? super T, ? extends U> mapper): If a value is present, applies the mapping function to it, and if the result is non-null, returns an Optional describing the result. Otherwise, returns an empty Optional.
+flatMap(Function<? super T, Optional<U>> mapper): Similar to map, but the mapping function returns an Optional, and flatMap unwraps the result.
+5. New Date and Time API (java.time package)
+Q21: What are the problems with the old Date and Calendar APIs in Java?
+A:
+
+Thread Safety: java.util.Date and java.util.Calendar are not thread-safe, leading to potential concurrency issues.
+Mutability: java.util.Date objects are mutable, which can lead to unexpected side effects.
+Poor API Design: The API is often confusing, with inconsistent indexing (e.g., month starts from 0), and lacks clear methods for common operations.
+Lack of Time Zones: Handling time zones was cumbersome and error-prone.
+Leap Seconds: The old API does not correctly handle leap seconds.
+Q22: What are the main features and advantages of the new Date and Time API in Java 8?
+A: The new Date and Time API, located in the java.time package, addresses the shortcomings of the old APIs.
+
+Immutability: All core classes (LocalDate, LocalTime, LocalDateTime, ZonedDateTime, Instant, Duration, Period) are immutable and thread-safe.
+Clear Separation: Provides separate classes for date (LocalDate), time (LocalTime), date-time (LocalDateTime), and date-time with time zone (ZonedDateTime).
+Fluent API: Provides a clean and intuitive fluent API for common date/time operations.
+Time Zones: Robust support for time zones using ZoneId and ZoneOffset.
+Human-Friendly: Designed to be more intuitive and natural for developers.
+ISO-8601 Compliance: Follows the ISO-8601 standard for dates and times.
+Duration and Period: Introduces Duration for time-based amounts (seconds, nanoseconds) and Period for date-based amounts (years, months, days).
+Q23: Explain LocalDate, LocalTime, and LocalDateTime with examples.
+A:
+
+LocalDate: Represents a date without a time or time zone.
+
+Java
+
+LocalDate today = LocalDate.now();        // e.g., 2025-05-26
+LocalDate specificDate = LocalDate.of(2023, 10, 26); // 2023-10-26
+LocalDate nextWeek = today.plusWeeks(1);
+LocalTime: Represents a time without a date or time zone.
+
+Java
+
+LocalTime now = LocalTime.now();          // e.g., 22:30:45.123
+LocalTime specificTime = LocalTime.of(15, 30, 0); // 15:30
+LocalTime later = now.plusHours(2);
+LocalDateTime: Represents both a date and a time, without a time zone.
+
+Java
+
+LocalDateTime currentDateTime = LocalDateTime.now(); // e.g., 2025-05-26T22:30:45.123
+LocalDateTime specificDateTime = LocalDateTime.of(2023, 10, 26, 15, 30); // 2023-10-26T15:30
+LocalDateTime nextHour = currentDateTime.plusHours(1);
+Q24: What is the difference between Instant and ZonedDateTime?
+A:
+
+Instant: Represents a point in time on the timeline, often used for machine-readable time stamps. It is effectively a timestamp in nanoseconds from the epoch (January 1, 1970, 00:00:00 GMT/UTC). It does not carry time zone information.
+
+Java
+
+Instant now = Instant.now(); // e.g., 2025-05-27T02:30:00.123Z (UTC)
+ZonedDateTime: Represents a date-time with a time zone. It's the most comprehensive date-time object, providing full handling of time zones and daylight saving time rules.
+
+Java
+
+ZonedDateTime currentZonedDateTime = ZonedDateTime.now(); // e.g., 2025-05-26T22:30:00.123-04:00[America/New_York]
+ZoneId newYorkZone = ZoneId.of("America/New_York");
+ZonedDateTime specificZoned = ZonedDateTime.of(2023, 10, 26, 15, 30, 0, 0, newYorkZone);
+Q25: How do you format and parse dates/times in Java 8?
+A: Use the DateTimeFormatter class.
+
+Formatting:
+
+Java
+
+LocalDateTime now = LocalDateTime.now();
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+String formattedDateTime = now.format(formatter); // e.g., "2025-05-26 22:30:00"
+Parsing:
+
+Java
+
+String dateString = "2024-01-15 10:00:00";
+DateTimeFormatter parser = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+LocalDateTime parsedDateTime = LocalDateTime.parse(dateString, parser);
+6. Other Java 8 Features
+Q26: What are Default and Static methods in interfaces (revisited)?
+A:
+
+Default Methods: Allow interfaces to have method implementations. Marked with the default keyword. They enable backward compatibility by allowing new methods to be added to existing interfaces without breaking implementing classes.
+Static Methods: Utility methods that belong to the interface itself. They are called directly on the interface name and cannot be overridden by implementing classes.
+Q27: What is Nashorn in Java 8?
+A: Nashorn is a JavaScript engine that was introduced in Java 8. It allows Java developers to embed JavaScript code within Java applications and also provides a jjs command-line tool for executing JavaScript files. This was a significant step towards enabling more polyglot programming within the JVM. (Note: Nashorn was deprecated in Java 11 and removed in Java 15, with GraalVM's JavaScript engine being the successor).
+
+Q28: How does Java 8 handle type inference?
+A: Java 8 enhanced type inference, allowing the compiler to infer the types of generic parameters in many more contexts, especially with lambda expressions and method references. This reduces boilerplate code and makes the code more concise.
+
+Example:
+
+Before Java 8: List<String> list = new ArrayList<String>();
+Java 7+: List<String> list = new ArrayList<>(); (Diamond operator)
+Java 8 (with lambdas): Predicate<String> p = s -> s.length() > 5; (Compiler infers s is String)
